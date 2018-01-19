@@ -4,12 +4,16 @@ const {
   compareUserPW
 } = require('../utils/middlewares');
 
-const { getAllJokes, createUser, login } = require('../controllers');
+const {
+  getAllJokes,
+  createUser,
+  login
+} = require('../controllers/index');
 
-module.exports = server => {
-  server.get('/api/jokes', authenticate, getAllJokes);
-  server
-    .route('/api/users')
-    .post(encryptUserPW /* I need some controller Love*/);
-  server.route('/api/login').post(compareUserPW, login);
-};
+const router = require('express').Router();
+
+router.post('/jokes', authenticate, getAllJokes);
+router.post('/users', encryptUserPW, createUser);
+router.post('/login', compareUserPW, login);
+
+module.exports = router;
